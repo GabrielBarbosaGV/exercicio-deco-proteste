@@ -23,9 +23,11 @@ createConnection().then(async connection => {
         });
     });
 
-    // run app
-    app.listen(3000);
+    const backend_port = process.env.BACKEND_PORT;
 
-    console.log("Express application is up and running on port 3000");
+    // run app
+    app.listen(backend_port);
+
+    console.log(`Express application is up and running on port ${backend_port}`);
 
 }).catch(error => console.log("TypeORM connection error: ", error));
