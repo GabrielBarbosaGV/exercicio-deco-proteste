@@ -26,6 +26,7 @@ const makeCountyFormatters = ({
         districtName: county.district.name,
         initialZipCode: county.initialZipCode,
         finalZipCode: county.finalZipCode,
+        active: county.active,
         editButton: editButtonMaker(county),
         viewButton: viewButtonMaker(county)
     });
@@ -59,6 +60,7 @@ const MainGridComponent: React.FC<MainGridComponentProps> = ({outerDivStyle}) =>
                 <AgGridColumn field="districtName"></AgGridColumn>
                 <AgGridColumn field="initialZipCode"></AgGridColumn>
                 <AgGridColumn field="finalZipCode"></AgGridColumn>
+                <AgGridColumn field="active"></AgGridColumn>
                 <AgGridColumn field="editButton"></AgGridColumn>
                 <AgGridColumn field="viewButton"></AgGridColumn>
             </AgGridReact>
