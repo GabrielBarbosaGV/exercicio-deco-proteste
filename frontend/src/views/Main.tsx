@@ -1,5 +1,6 @@
 import { AppBar, Tab, Tabs } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import CountyCreation from './CountyCreation';
 import Overview from './Overview';
 
 interface TabContent {
@@ -27,7 +28,7 @@ const Main: React.FC = () => {
     const initialTabContents: TabContent[] = [
         {
             label: "Overview",
-            component: <Overview />,
+            component: <Overview handleCreateButtonClick={handleOverviewCreateButtonClick}/>,
             index: 0
         }
     ];
@@ -35,11 +36,25 @@ const Main: React.FC = () => {
     const [tabContents, setTabContents] = useState(initialTabContents);
     const [currentTabIndex, setCurrentTabIndex] = useState(0);
 
+    function handleOverviewCreateButtonClick(event: any) {
+        const [tabContent,] = tabContents;
+        setTabContents(
+            [
+                tabContent,
+                {
+                    label: "Create County",
+                    component: <CountyCreation />,
+                    index: 1
+                }
+            ]
+        );
+        setCurrentTabIndex(1);
+    };
+
     const handleChange = (event: Object, newValue: any) => {
-        debugger;
         setCurrentTabIndex(newValue);
     };
-    
+
     return (
         <>
         <AppBar position="static">
