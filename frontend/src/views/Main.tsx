@@ -35,10 +35,14 @@ const Main: React.FC = () => {
 
     const [tabContents, setTabContents] = useState(initialTabContents);
     const [currentTabIndex, setCurrentTabIndex] = useState(0);
+
+    const handleChange = (event: any, newValue: number) => {
+        setCurrentTabIndex(newValue);
+    };
     
     return (
         <AppBar position="static">
-            {tabContents.map(tc => <Tab label={tc.component} />)}
+            {tabContents.map(tc => <Tab label={tc.label} onChange={handleChange} />)}
         </AppBar>
     )
 };

@@ -1,9 +1,9 @@
 import React from 'react';
-import MainGridComponent from './components/MainGridComponent';
+import Main from './views/Main';
 
 function App() {
   return (
-    <MainGridComponent outerDivStyle={{height: "400px"}} />
+    <Main />
   );
 }
 
