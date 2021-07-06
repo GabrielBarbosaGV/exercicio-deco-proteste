@@ -1,9 +1,11 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
+import countiesReducer from '../features/counties/countiesSlice';
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
+    counties: countiesReducer
   },
 });
 
