@@ -5,7 +5,7 @@ import {County} from '../entity/County';
 export const countyWithCountryAndDistrictGetByIdAction = async (request: Request, response: Response) => {
     const countyRepository = getManager().getRepository(County);
 
-    const county = countyRepository.findOne(request.params.id, {
+    const county = await countyRepository.findOne(request.params.id, {
         relations: ["country", "district"]
     });
 

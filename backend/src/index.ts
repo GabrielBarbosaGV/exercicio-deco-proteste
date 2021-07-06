@@ -4,6 +4,7 @@ import {Request, Response} from "express";
 import * as express from "express";
 import * as bodyParser from "body-parser";
 import {AppRoutes} from "./routes";
+const cors = require('cors');
 
 // create connection with database
 // note that it's not active database connection
@@ -13,6 +14,11 @@ createConnection().then(async connection => {
     // create express app
     const app = express();
     app.use(bodyParser.json());
+
+    if (process.env.NODE_ENV == 'development') {
+        console.log("Running in development mode");
+        app.use(cors());
+    }
 
     // register all application routes
     AppRoutes.forEach(route => {

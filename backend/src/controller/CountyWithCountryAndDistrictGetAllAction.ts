@@ -5,7 +5,7 @@ import {County} from '../entity/County';
 export const countyWithCountryAndDistrictGetAllAction = async (request: Request, response: Response) => {
     const countyRepository = getManager().getRepository(County);
 
-    const counties = countyRepository.find({
+    const counties = await countyRepository.find({
         relations: ["country", "district"]
     });
 

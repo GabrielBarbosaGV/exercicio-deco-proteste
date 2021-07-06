@@ -5,7 +5,7 @@ import {District} from '../entity/District';
 export const districtGetByCountryIdAction = async (request: Request, response: Response) => {
     const districtRepository = getManager().getRepository(District);
 
-    const districts = districtRepository.find({
+    const districts = await districtRepository.find({
         relations: ["country"],
         where: {
             country: {

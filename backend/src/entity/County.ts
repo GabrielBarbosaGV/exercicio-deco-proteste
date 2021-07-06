@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinTable} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn} from "typeorm";
 import {District} from './District';
 import {Country} from './Country';
 
@@ -20,10 +20,10 @@ export class County {
     active: boolean;
 
     @OneToOne(() => Country)
-    @JoinTable()
+    @JoinColumn()
     country: Country;
 
     @OneToOne(() => District)
-    @JoinTable()
+    @JoinColumn()
     district: District;
 }

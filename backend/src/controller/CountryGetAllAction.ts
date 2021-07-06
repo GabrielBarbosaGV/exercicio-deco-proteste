@@ -5,7 +5,7 @@ import {Country} from '../entity/Country';
 export const countryGetAllAction = async (request: Request, response: Response) => {
     const countryRepository = getManager().getRepository(Country);
 
-    const countries = countryRepository.find();
+    const countries = await countryRepository.find();
 
     response.send(countries);
 }
