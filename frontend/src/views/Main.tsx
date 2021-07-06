@@ -1,4 +1,4 @@
-import { AppBar, Tab } from '@material-ui/core';
+import { AppBar, Tab, Tabs } from '@material-ui/core';
 import React, { useState } from 'react';
 import Overview from './Overview';
 
@@ -11,14 +11,13 @@ interface TabContent {
 interface TabPanelProps {
     index: number;
     value: number;
-    component: any;
 }
 
-const TabPanel: React.FC<TabPanelProps> = ({index, value, component}) => {
+const TabPanel: React.FC<TabPanelProps> = ({index, value, children}) => {
     if (index === value) {
         return (
             <>
-            {component}
+            {children}
             </>
         );
     } else return (null);
@@ -36,14 +35,24 @@ const Main: React.FC = () => {
     const [tabContents, setTabContents] = useState(initialTabContents);
     const [currentTabIndex, setCurrentTabIndex] = useState(0);
 
-    const handleChange = (event: any, newValue: number) => {
+    const handleChange = (event: Object, newValue: any) => {
+        debugger;
         setCurrentTabIndex(newValue);
     };
     
     return (
+        <>
         <AppBar position="static">
-            {tabContents.map(tc => <Tab label={tc.label} onChange={handleChange} />)}
+            <Tabs value={currentTabIndex} onChange={handleChange}>
+                {tabContents.map(tc => <Tab label={tc.label} />)}
+            </Tabs>
         </AppBar>
+        {tabContents.map(tc => (
+            <TabPanel index={tc.index} value={currentTabIndex}>
+                {tc.component}
+            </TabPanel>)
+        )}
+        </>
     )
 };
 
