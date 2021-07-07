@@ -37,7 +37,7 @@ export const AppRoutes = [
         action: countyWithCountryAndDistrictGetAllAction
     },
     {
-        path: "/district/byCountry/:countryId",
+        path: "/districts/byCountry/:countryId",
         method: "get",
         action: districtGetByCountryIdAction
     },

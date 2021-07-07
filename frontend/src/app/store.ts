@@ -3,13 +3,15 @@ import counterReducer from '../features/counter/counterSlice';
 import countiesReducer from '../features/counties/countiesSlice';
 import countriesReducer from '../features/countries/countriesSlice';
 import districtsReducer from '../features/districts/districtsSlice';
+import districtsByCountryIdReducer from '../features/districts/districtsByCountryIdSlice';
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     counties: countiesReducer,
     countries: countriesReducer,
-    districts: districtsReducer
+    districts: districtsReducer,
+    districtsByCountryId: districtsByCountryIdReducer
   },
 });
 
