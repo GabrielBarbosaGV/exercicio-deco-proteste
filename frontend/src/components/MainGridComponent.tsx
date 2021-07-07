@@ -22,8 +22,8 @@ const makeCountyFormatters = ({
     const formatCounty = (county: County) => ({
         id: county.id,
         name: county.name,
-        countryName: county.country.name,
-        districtName: county.district.name,
+        countryName: county?.country?.name,
+        districtName: county?.district?.name,
         initialZipCode: county.initialZipCode,
         finalZipCode: county.finalZipCode,
         active: county.active,

@@ -36,19 +36,22 @@ const Main: React.FC = () => {
     const [tabContents, setTabContents] = useState(initialTabContents);
     const [currentTabIndex, setCurrentTabIndex] = useState(0);
 
-    function handleOverviewCreateButtonClick(event: any) {
+    const setSecondTabContentAndSetAsCurrentIndex = (newTabContent: TabContent) => {
         const [tabContent,] = tabContents;
-        setTabContents(
-            [
-                tabContent,
-                {
-                    label: "Create County",
-                    component: <CountyCreation />,
-                    index: 1
-                }
-            ]
-        );
+
+        setTabContents([tabContent, newTabContent]);
+
         setCurrentTabIndex(1);
+    };
+
+    function handleOverviewCreateButtonClick(event: any) {
+        setSecondTabContentAndSetAsCurrentIndex(
+            {
+                label: "Create County",
+                component: <CountyCreation />,
+                index: 1
+            }
+        );
     };
 
     const handleChange = (event: Object, newValue: any) => {

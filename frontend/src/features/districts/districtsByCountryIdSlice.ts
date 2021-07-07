@@ -1,16 +1,18 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { fetchDistrictsByCountryId } from './districtsAPI';
 import { District } from './District';
 
+export type DistrictsByCountryIdStateStatus = 'unloaded' | 'loading' | 'loaded' | 'failed';
+
 export interface DistrictsByCountryIdState {
     districtsByCountryId: District[],
-    status: 'idle' | 'loading' | 'failed';
+    status: DistrictsByCountryIdStateStatus
 }
 
 const initialState: DistrictsByCountryIdState = {
     districtsByCountryId: [],
-    status: 'idle'
+    status: 'unloaded'
 }
 
 export const fetchDistrictsByCountryIdAsync = createAsyncThunk(
@@ -23,17 +25,23 @@ export const fetchDistrictsByCountryIdAsync = createAsyncThunk(
 export const districtsByCountryIdSlice = createSlice({
     name: 'districtsByCountryId',
     initialState,
-    reducers: {},
+    reducers: {
+        setStatus: (state: DistrictsByCountryIdState, { payload }: PayloadAction<DistrictsByCountryIdStateStatus>) => {
+            state.status = payload;
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchDistrictsByCountryIdAsync.pending, (state) => {
             state.status = 'loading';
         });
         builder.addCase(fetchDistrictsByCountryIdAsync.fulfilled, (state, {payload}) => {
-            state.status = 'idle';
+            state.status = 'loaded';
             state.districtsByCountryId = payload;
         });
     }
 });
+
+export const { setStatus } = districtsByCountryIdSlice.actions;
 
 export const selectDistrictsByCountryId = (state: RootState) => state.districtsByCountryId.districtsByCountryId;
 

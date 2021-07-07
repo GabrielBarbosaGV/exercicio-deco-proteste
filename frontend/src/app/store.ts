@@ -4,6 +4,7 @@ import countiesReducer from '../features/counties/countiesSlice';
 import countriesReducer from '../features/countries/countriesSlice';
 import districtsReducer from '../features/districts/districtsSlice';
 import districtsByCountryIdReducer from '../features/districts/districtsByCountryIdSlice';
+import countiesCreationReducer from '../features/counties/countiesCreationSlice';
 
 export const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ export const store = configureStore({
     counties: countiesReducer,
     countries: countriesReducer,
     districts: districtsReducer,
-    districtsByCountryId: districtsByCountryIdReducer
+    districtsByCountryId: districtsByCountryIdReducer,
+    countiesCreation: countiesCreationReducer
   },
 });
 

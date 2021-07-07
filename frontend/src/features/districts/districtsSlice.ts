@@ -1,16 +1,18 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import { fetchAllDistricts } from './districtsAPI';
 import { District } from './District';
 
+export type DistrictStateStatus = 'unloaded' | 'loading' | 'loaded'| 'failed';
+
 export interface DistrictsState {
     districts: District[],
-    status: 'idle' | 'loading' | 'failed';
+    status: DistrictStateStatus
 }
 
 const initialState: DistrictsState = {
     districts: [],
-    status: 'idle'
+    status: 'unloaded'
 }
 
 export const fetchAllDistrictsAsync = createAsyncThunk(
@@ -23,17 +25,23 @@ export const fetchAllDistrictsAsync = createAsyncThunk(
 export const districtsSlice = createSlice({
     name: 'districts',
     initialState,
-    reducers: {},
+    reducers: {
+        setStatus: (state: DistrictsState, { payload }: PayloadAction<DistrictStateStatus>) => {
+            state.status = payload;
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(fetchAllDistrictsAsync.pending, (state) => {
             state.status = 'loading';
         });
         builder.addCase(fetchAllDistrictsAsync.fulfilled, (state, {payload}) => {
-            state.status = 'idle';
+            state.status = 'loaded';
             state.districts = payload;
         })
     }
 });
+
+export const { setStatus } = districtsSlice.actions;
 
 export const selectDistricts = (state: RootState) => state.districts.districts;
 
