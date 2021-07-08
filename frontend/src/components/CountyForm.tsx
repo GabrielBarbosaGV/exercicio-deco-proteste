@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { fetchAllCountriesAsync, selectCountries, selectStatus as selectCountriesStatus } from '../features/countries/countriesSlice';
-import {
-    selectDistrictsByCountryId,
-    selectStatus as selectDistrictsStatus,
-    setStatus as setDistrictsStatus,
-    fetchDistrictsByCountryIdAsync
-} from '../features/districts/districtsByCountryIdSlice';
+import { selectDistrictsByCountryId, fetchDistrictsByCountryIdAsync } from '../features/districts/districtsByCountryIdSlice';
 
 interface CountyFormProps {
     onSubmit: (data: any) => void,
@@ -35,7 +30,7 @@ const CountyForm: React.FC<CountyFormProps> = ({onSubmit, disabled}) => {
     useEffect(() => {
         if (chosenCountryId)
             dispatch(fetchDistrictsByCountryIdAsync(chosenCountryId));
-    }, [chosenCountryId]);
+    }, [dispatch, chosenCountryId]);
 
     const InfoBlock = styled.div`
         margin: 10px 15px 0px 20px;

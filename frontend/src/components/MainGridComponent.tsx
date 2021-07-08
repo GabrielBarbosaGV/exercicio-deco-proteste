@@ -1,68 +1,66 @@
 import React, { CSSProperties, useEffect } from 'react';
-import {AgGridColumn, AgGridReact} from 'ag-grid-react';
+import { AgGridReact } from 'ag-grid-react';
 import { County } from '../features/counties/County';
-import { Button } from '@material-ui/core';
-import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { fetchAllCountiesAsync, selectCounties } from '../features/counties/countiesSlice';
+import { fetchAllCountiesAsync, selectCounties, selectStatus as selectCountiesStatus } from '../features/counties/countiesSlice';
 
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 
 interface MainGridComponentProps {
     outerDivStyle?: CSSProperties
 }
 
-const makeCountyFormatters = ({
-    editButtonMaker,
-    viewButtonMaker
-}: {
-    editButtonMaker: (county: County) => any,
-    viewButtonMaker: (county: County) => any
-}) => {
-    const formatCounty = (county: County) => ({
-        id: county.id,
-        name: county.name,
-        countryName: county?.country?.name,
-        districtName: county?.district?.name,
-        initialZipCode: county.initialZipCode,
-        finalZipCode: county.finalZipCode,
-        active: county.active,
-        editButton: editButtonMaker(county),
-        viewButton: viewButtonMaker(county)
-    });
+const formatCounty = (county: County) => ({
+    id: county.id,
+    name: county.name,
+    countryName: county?.country?.name,
+    districtName: county?.district?.name,
+    initialZipCode: county.initialZipCode,
+    finalZipCode: county.finalZipCode,
+    active: county.active,
+    editButton: county,
+    viewButton: county
+});
 
-    const formatCounties = (counties: County[]) => counties.map(formatCounty);
-
-    return {formatCounty, formatCounties};
-};
+const formatCounties = (counties: County[]) => counties.map(formatCounty);
 
 const MainGridComponent: React.FC<MainGridComponentProps> = ({outerDivStyle}) => {
-    const {formatCounties} = makeCountyFormatters({
-        editButtonMaker: (county: County) => <Button>Edit</Button>,
-        viewButtonMaker: (county: County) => <Button>View</Button>
-    });
+    const counties = useSelector(selectCounties);
+    const countiesStatus = useSelector(selectCountiesStatus);
 
-    const counties = useAppSelector(selectCounties);
-    const dispatch = useAppDispatch();
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchAllCountiesAsync());
-    });
+        if (countiesStatus === 'unloaded')
+            dispatch(fetchAllCountiesAsync());
+    }, [dispatch, countiesStatus]);
 
     const rowData = formatCounties(counties);
 
+    const ColumnButton = styled.button`
+        border: 0;
+        background-color: blue;
+        border-radius: 3px;
+        color: white;
+    `;
+
+    const columnDefs = [
+        { headerName: "ID", field: "id" },
+        { headerName: "Name", field: "name" },
+        { headerName: "Country Name", field: "countryName" },
+        { headerName: "District Name", field: "districtName"},
+        { headerName: "Initial Zip Code", field: "initialZipCode" },
+        { headerName: "Final Zip Code", field: "finalZipCode" },
+        { headerName: "Active", field: "active"},
+        { headerName: "Edit", field: "editButton", cellRendererFramework: (county: any) => <ColumnButton>Edit</ColumnButton> },
+        { headerName: "View", field: "viewButton", cellRendererFramework: (county: any) => <ColumnButton>View</ColumnButton>}
+    ];
+
     return (
         <div className="ag-theme-alpine" style={outerDivStyle}>
-            <AgGridReact rowData={rowData}>
-                <AgGridColumn field="id"></AgGridColumn>
-                <AgGridColumn field="name"></AgGridColumn>
-                <AgGridColumn field="countryName"></AgGridColumn>
-                <AgGridColumn field="districtName"></AgGridColumn>
-                <AgGridColumn field="initialZipCode"></AgGridColumn>
-                <AgGridColumn field="finalZipCode"></AgGridColumn>
-                <AgGridColumn field="active"></AgGridColumn>
-                <AgGridColumn field="editButton"></AgGridColumn>
-                <AgGridColumn field="viewButton"></AgGridColumn>
+            <AgGridReact rowData={rowData} columnDefs={columnDefs}>
             </AgGridReact>
         </div>
     );

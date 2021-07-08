@@ -1,11 +1,15 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import CountyForm from '../components/CountyForm';
-import { createCounty } from '../features/counties/countiesAPI';
 import { createCountyAsync } from '../features/counties/countiesCreationSlice';
+import { setStatus as setCountiesStatus } from '../features/counties/countiesSlice';
 import { County } from '../features/counties/County';
 
-const CountyCreation: React.FC = () => {
+interface CountyCreationProps {
+    onCreate?: (county: County) => void
+}
+
+const CountyCreation: React.FC<CountyCreationProps> = ({ onCreate }) => {
     const dispatch = useDispatch();
 
     const handleSubmit = ({
@@ -26,6 +30,8 @@ const CountyCreation: React.FC = () => {
         };
 
         dispatch(createCountyAsync(county));
+        dispatch(setCountiesStatus('unloaded'));
+        onCreate && onCreate(county);
     };
 
     return <CountyForm onSubmit={handleSubmit} />;

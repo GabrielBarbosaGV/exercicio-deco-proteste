@@ -44,11 +44,15 @@ const Main: React.FC = () => {
         setCurrentTabIndex(1);
     };
 
+    const handleCountyCreation = () => {
+        setCurrentTabIndex(0);
+    };
+
     function handleOverviewCreateButtonClick(event: any) {
         setSecondTabContentAndSetAsCurrentIndex(
             {
                 label: "Create County",
-                component: <CountyCreation />,
+                component: <CountyCreation onCreate={handleCountyCreation} />,
                 index: 1
             }
         );
